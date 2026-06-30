@@ -36,5 +36,5 @@ export async function verifyCredentials(
 
 	if (!user || !passwordMatches) return null;
 
-	return { id: String(user.id), email: user.email };
+	return { id: String(user.id), email: user.email, role: user.role };
 }

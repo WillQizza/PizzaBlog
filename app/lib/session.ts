@@ -2,6 +2,7 @@ import "server-only";
 
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import type { Role } from "@/app/generated/prisma/client";
 
 const SESSION_COOKIE = "session";
 const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
@@ -11,11 +12,13 @@ const encodedKey = new TextEncoder().encode(process.env.SESSION_SECRET);
 export type SessionUser = {
 	id: string;
 	email: string;
+	role: Role;
 };
 
 export type SessionPayload = {
 	userId: string;
 	email: string;
+	role: Role;
 	expiresAt: string; // ISO timestamp
 };
 
@@ -48,6 +51,7 @@ export async function createSession(user: SessionUser): Promise<void> {
 	const session = await encrypt({
 		userId: user.id,
 		email: user.email,
+		role: user.role,
 		expiresAt: expiresAt.toISOString(),
 	});
 
