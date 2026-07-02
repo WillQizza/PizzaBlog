@@ -1,0 +1,56 @@
+.main {
+	flex: 1;
+	background: var(--surface);
+}
+
+.container {
+	max-width: 72rem;
+	margin: 0 auto;
+	padding: 0 1.5rem;
+}
+
+.hero {
+	padding: 4.5rem 0 3.5rem;
+}
+
+.header {
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin-bottom: 1rem;
+}
+
+.headline {
+	font-family: var(--font-serif);
+	font-size: clamp(2.25rem, 5vw, 3.5rem);
+	font-weight: 700;
+	line-height: 1.15;
+	color: var(--ink);
+	max-width: 44rem;
+	margin-bottom: 1.25rem;
+}
+
+.description {
+	font-family: var(--font-serif);
+	font-size: 1.25rem;
+	line-height: 1.5;
+	color: var(--ink-muted);
+	max-width: 40rem;
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+	gap: 1.5rem;
+	padding-bottom: 6rem;
+}
+
+.empty {
+	grid-column: 1 / -1;
+	font-family: var(--font-serif);
+	font-size: 1.125rem;
+	color: var(--ink-muted);
+}

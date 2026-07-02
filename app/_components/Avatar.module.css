@@ -1,0 +1,14 @@
+.avatar {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 2rem;
+	height: 2rem;
+	border-radius: 50%;
+	background: #1e2f66;
+	color: #ffffff;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}

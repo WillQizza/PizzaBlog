@@ -1,6 +1,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+	--accent: #2b45d9;
+	--accent-hover: #2338b8;
+	--ink: #16181d;
+	--ink-muted: #4b5563;
+	--ink-faint: #9ca3af;
+	--surface: #f3f4f6;
+	--surface-card: #ffffff;
+	--border: #e5e7eb;
+	--border-faint: #f0f1f3;
+
+	--font-serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+	--font-mono: ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace;
 }
 
 @media (prefers-color-scheme: dark) {

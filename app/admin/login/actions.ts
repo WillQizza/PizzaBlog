@@ -1,8 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createSession } from "@/app/lib/session";
-import { verifyCredentials } from "@/app/lib/users";
+import { createSession } from "@/app/_lib/session";
+import { verifyCredentials } from "@/app/_lib/users";
 
 export type LoginState = { error?: string } | undefined;
 

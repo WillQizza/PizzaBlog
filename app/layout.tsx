@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { getSiteSettings } from "@/app/_lib/settings";
 import "./globals.css";
 
-export const metadata: Metadata = {
-	title: "PizzaBlog",
-	description: "A blog!"
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const settings = await getSiteSettings();
+
+	return {
+		title: settings.siteName,
+		description: settings.description
+	};
+}
 
 export default function RootLayout({
 	children,

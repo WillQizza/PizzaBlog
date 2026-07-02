@@ -25,13 +25,13 @@ npx prisma migrate dev --name <descriptive-name>
 npx prisma migrate dev --name <descriptive-name> --create-only
 ```
 
-After the migration is applied, always regenerate the Prisma Client so the generated types under `app/generated/prisma` match the new schema:
+After the migration is applied, always regenerate the Prisma Client so the generated types under `app/_generated/prisma` match the new schema:
 
 ```
 npx prisma generate
 ```
 
-`migrate dev` does not reliably regenerate the client in this project (the `prisma-client` generator with a driver adapter), so run `prisma generate` explicitly and confirm `app/generated/prisma` exists before relying on the client.
+`migrate dev` does not reliably regenerate the client in this project (the `prisma-client` generator with a driver adapter), so run `prisma generate` explicitly and confirm `app/_generated/prisma` exists before relying on the client.
 
 ## Running / applying migrations
 

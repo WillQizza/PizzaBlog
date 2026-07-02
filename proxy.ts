@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { decrypt } from "@/app/lib/session";
+import { decrypt } from "@/app/_lib/session";
 
 const LOGIN_PATH = "/admin/login";
 

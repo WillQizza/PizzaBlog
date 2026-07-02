@@ -1,8 +1,8 @@
 import "server-only";
 
 import bcrypt from "bcryptjs";
-import { prisma } from "@/app/lib/prisma";
-import type { SessionUser } from "@/app/lib/session";
+import { prisma } from "@/app/_lib/prisma";
+import type { SessionUser } from "@/app/_lib/session";
 
 const SALT_ROUNDS = 12;
 

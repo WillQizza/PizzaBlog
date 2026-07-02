@@ -1,6 +1,6 @@
 generator client {
 	provider = "prisma-client"
-	output   = "../app/generated/prisma"
+	output   = "../app/_generated/prisma"
 }
 
 datasource db {
@@ -20,6 +20,12 @@ model User {
 	lastName  String
 	role      Role   @default(editor)
 	posts     Post[]
+}
+
+model SiteSetting {
+	id    Int    @id @default(autoincrement())
+	key   String @unique
+	value String
 }
 
 model Post {

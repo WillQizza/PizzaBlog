@@ -1,0 +1,49 @@
+.header {
+	background: var(--surface-card);
+	border-bottom: 1px solid var(--border);
+}
+
+.inner {
+	max-width: 72rem;
+	margin: 0 auto;
+	padding: 0.875rem 1.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.nav {
+	display: flex;
+	align-items: center;
+	gap: 1.25rem;
+}
+
+.navLink {
+	font-size: 0.9375rem;
+	font-weight: 600;
+	color: var(--ink);
+	padding-bottom: 0.125rem;
+	border-bottom: 2px solid transparent;
+}
+
+.divider {
+	width: 1px;
+	height: 1.25rem;
+	background: var(--border);
+}
+
+.signIn {
+	display: inline-flex;
+	align-items: center;
+	background: var(--accent);
+	color: #ffffff;
+	font-size: 0.9375rem;
+	font-weight: 600;
+	padding: 0.5rem 1.125rem;
+	border-radius: 0.5rem;
+	transition: background 0.15s ease;
+}
+
+.signIn:hover {
+	background: var(--accent-hover);
+}
