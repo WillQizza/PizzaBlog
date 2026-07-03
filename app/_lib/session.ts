@@ -10,13 +10,13 @@ const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const encodedKey = new TextEncoder().encode(process.env.SESSION_SECRET);
 
 export type SessionUser = {
-	id: string;
+	id: number;
 	email: string;
 	role: Role;
 };
 
 export type SessionPayload = {
-	userId: string;
+	userId: number;
 	email: string;
 	role: Role;
 	expiresAt: string; // ISO timestamp
@@ -41,7 +41,7 @@ export async function decrypt(
 		});
 		return payload as unknown as SessionPayload;
 	} catch {
-		// Tampered, expired, or otherwise invalid token.
+		// Invalid token.
 		return null;
 	}
 }

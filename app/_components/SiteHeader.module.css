@@ -33,17 +33,22 @@
 }
 
 .signIn {
-	display: inline-flex;
-	align-items: center;
-	background: var(--accent);
-	color: #ffffff;
 	font-size: 0.9375rem;
 	font-weight: 600;
-	padding: 0.5rem 1.125rem;
-	border-radius: 0.5rem;
-	transition: background 0.15s ease;
+	color: var(--ink);
+	padding-bottom: 0.125rem;
+	border-bottom: 2px solid transparent;
 }
 
-.signIn:hover {
-	background: var(--accent-hover);
+.logOut {
+	font-size: 0.9375rem;
+	font-weight: 600;
+	color: var(--ink);
+	font-family: inherit;
+	padding: 0;
+	padding-bottom: 0.125rem;
+	background: transparent;
+	border: none;
+	border-bottom: 2px solid transparent;
+	cursor: pointer;
 }

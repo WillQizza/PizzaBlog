@@ -2,6 +2,7 @@ import "server-only";
 
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/_lib/prisma";
+import type { Role } from "@/app/_generated/prisma/enums";
 import type { SessionUser } from "@/app/_lib/session";
 
 const SALT_ROUNDS = 12;
@@ -16,6 +17,40 @@ const DUMMY_HASH = bcrypt.hashSync(
 
 export function hashPassword(password: string): Promise<string> {
 	return bcrypt.hash(password, SALT_ROUNDS);
+}
+
+export async function hasAnyUsers(): Promise<boolean> {
+	const count = await prisma.user.count();
+	return count > 0;
+}
+
+export async function registerUser({
+	username,
+	password,
+	role,
+}: {
+	username: string;
+	password: string;
+	role: Role;
+}): Promise<SessionUser> {
+	const normalizedEmail = username.trim().toLowerCase();
+	const hashedPassword = await hashPassword(password);
+
+	// The schema requires a name; seed it from the email local-part so the
+	// user has a sensible default they can refine later.
+	const [localPart] = normalizedEmail.split("@");
+
+	const user = await prisma.user.create({
+		data: {
+			email: normalizedEmail,
+			password: hashedPassword,
+			firstName: localPart ?? normalizedEmail,
+			lastName: "",
+			role,
+		},
+	});
+
+	return { id: user.id, email: user.email, role: user.role };
 }
 
 export async function verifyCredentials(
@@ -36,5 +71,5 @@ export async function verifyCredentials(
 
 	if (!user || !passwordMatches) return null;
 
-	return { id: String(user.id), email: user.email, role: user.role };
+	return { id: user.id, email: user.email, role: user.role };
 }

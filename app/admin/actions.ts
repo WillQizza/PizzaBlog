@@ -5,5 +5,5 @@ import { deleteSession } from "@/app/_lib/session";
 
 export async function logout(): Promise<void> {
 	await deleteSession();
-	redirect("/admin/login");
+	redirect("/");
 }
