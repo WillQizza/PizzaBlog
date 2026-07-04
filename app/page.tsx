@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 
 export default async function Home() {
 	const [posts, settings] = await Promise.all([
-		getRecentPosts(),
+		getRecentPosts({ limit: 3, liveOnly: true }),
 		getSiteSettings(),
 	]);
 

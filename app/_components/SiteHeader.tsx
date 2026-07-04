@@ -20,7 +20,7 @@ export async function SiteHeader() {
 					{session ? (
 						<>
 							<Link href="/admin" className={styles.signIn}>
-								Dashboard
+								Admin
 							</Link>
 							<span className={styles.divider} />
 							<form action={logout}>
@@ -30,8 +30,8 @@ export async function SiteHeader() {
 							</form>
 						</>
 					) : (
-						<Link href="/admin/login" className={styles.signIn}>
-							Sign in
+						<Link href="/" className={styles.signIn}>
+							Home
 						</Link>
 					)}
 				</nav>

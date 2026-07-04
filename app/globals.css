@@ -4,6 +4,11 @@
 
 	--accent: #2b45d9;
 	--accent-hover: #2338b8;
+	--accent-soft: #e9edfb;
+	--good: #15803d;
+	--good-soft: #dcfce7;
+	--warn: #b45309;
+	--warn-soft: #fef3c7;
 	--ink: #16181d;
 	--ink-muted: #4b5563;
 	--ink-faint: #9ca3af;
@@ -12,6 +17,7 @@
 	--border: #e5e7eb;
 	--border-faint: #f0f1f3;
 
+	--font-sans: "Google Sans", Arial, Helvetica, sans-serif;
 	--font-serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
 	--font-mono: ui-monospace, "Cascadia Code", Consolas, "Courier New", monospace;
 }
@@ -39,7 +45,7 @@ body {
   flex-direction: column;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

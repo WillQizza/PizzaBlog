@@ -1,0 +1,51 @@
+.app {
+	flex: 1;
+	display: grid;
+	grid-template-columns: 248px 1fr;
+	align-items: stretch;
+	background: var(--surface);
+}
+
+.sidebar {
+	position: sticky;
+	top: 0;
+	align-self: start;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	padding: 1.25rem 0.875rem;
+	background: var(--surface-card);
+	border-right: 1px solid var(--border);
+}
+
+.brand {
+	padding: 0.25rem 0.5rem;
+}
+
+.spacer {
+	flex: 1;
+}
+
+.main {
+	min-width: 0;
+	padding: 1.75rem;
+}
+
+@media (max-width: 760px) {
+	.app {
+		grid-template-columns: 1fr;
+	}
+
+	.sidebar {
+		position: static;
+		height: auto;
+		border-right: none;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.main {
+		padding: 1.1rem;
+	}
+}
+

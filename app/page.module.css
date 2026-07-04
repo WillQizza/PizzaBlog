@@ -14,7 +14,7 @@
 }
 
 .header {
-	font-family: var(--font-mono);
+	font-family: var(--font-sans);
 	font-size: 0.75rem;
 	font-weight: 700;
 	letter-spacing: 0.18em;
@@ -24,7 +24,7 @@
 }
 
 .headline {
-	font-family: var(--font-serif);
+	font-family: var(--font-sans);
 	font-size: clamp(2.25rem, 5vw, 3.5rem);
 	font-weight: 700;
 	line-height: 1.15;
@@ -34,7 +34,7 @@
 }
 
 .description {
-	font-family: var(--font-serif);
+	font-family: var(--font-sans);
 	font-size: 1.25rem;
 	line-height: 1.5;
 	color: var(--ink-muted);
@@ -50,7 +50,7 @@
 
 .empty {
 	grid-column: 1 / -1;
-	font-family: var(--font-serif);
+	font-family: var(--font-sans);
 	font-size: 1.125rem;
 	color: var(--ink-muted);
 }

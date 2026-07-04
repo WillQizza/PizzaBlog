@@ -1,0 +1,33 @@
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 0.15rem 0.55rem;
+	border-radius: 999px;
+	white-space: nowrap;
+}
+
+.pill::before {
+	content: "";
+	width: 6px;
+	height: 6px;
+	border-radius: 999px;
+	background: currentColor;
+}
+
+.published {
+	color: var(--good);
+	background: var(--good-soft);
+}
+
+.draft {
+	color: var(--warn);
+	background: var(--warn-soft);
+}
+
+.scheduled {
+	color: var(--accent);
+	background: var(--accent-soft);
+}
