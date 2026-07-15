@@ -83,7 +83,7 @@ export default async function AdminDashboardPage() {
 				<div className={styles.block}>
 					<div className={styles.blockHead}>
 						<h2 className={styles.blockTitle}>Recent posts</h2>
-						<Link href="/posts" className={styles.blockLink}>
+						<Link href="/admin/posts" className={styles.blockLink}>
 							View all
 						</Link>
 					</div>
@@ -153,7 +153,7 @@ export default async function AdminDashboardPage() {
 						<div className={styles.block}>
 							<div className={styles.blockHead}>
 								<h2 className={styles.blockTitle}>Your team</h2>
-								<Link href="/admin/users" className={styles.blockLink}>
+								<Link href="/admin/authors" className={styles.blockLink}>
 									Manage
 								</Link>
 							</div>

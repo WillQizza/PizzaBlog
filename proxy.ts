@@ -3,7 +3,7 @@ import { decrypt } from "@/app/_lib/session";
 
 const LOGIN_PATH = "/admin/login";
 
-const ADMIN_ONLY_PREFIXES = ["/admin/users"];
+const ADMIN_ONLY_PREFIXES = ["/admin/authors"];
 
 export default async function proxy(req: NextRequest) {
 	const pathname = req.nextUrl.pathname.toLocaleLowerCase();

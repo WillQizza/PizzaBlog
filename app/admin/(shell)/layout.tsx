@@ -23,7 +23,7 @@ export default async function AdminLayout({
 			items: [
 				{ label: "Dashboard", href: "/admin" },
 				{ label: "Posts", href: "/admin/posts" },
-				...(isAdmin ? [{ label: "Authors", href: "/admin/users" }] : []),
+				...(isAdmin ? [{ label: "Authors", href: "/admin/authors" }] : []),
 			],
 		},
 		{
@@ -35,7 +35,10 @@ export default async function AdminLayout({
 		},
 		{
 			label: "Account",
-			items: [{ label: "Log out", action: logout }],
+			items: [
+				{ label: "Settings", href: "/admin/account" },
+				{ label: "Log out", action: logout },
+			],
 		},
 	];
 

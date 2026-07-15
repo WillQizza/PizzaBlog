@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { login, register } from "./actions";
+import { login, register } from "../actions";
 import styles from "./AuthForm.module.css";
 
 type Mode = "login" | "register";

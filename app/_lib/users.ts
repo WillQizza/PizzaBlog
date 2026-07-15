@@ -82,6 +82,93 @@ export async function getTeamMembers(): Promise<TeamMember[]> {
 	}));
 }
 
+export type Author = {
+	id: number;
+	firstName: string;
+	lastName: string;
+	email: string;
+	role: Role;
+	postCount: number;
+};
+
+export async function getAuthors(): Promise<Author[]> {
+	const users = await prisma.user.findMany({
+		select: {
+			id: true,
+			firstName: true,
+			lastName: true,
+			email: true,
+			role: true,
+			_count: { select: { posts: true } },
+		},
+		orderBy: [{ role: "asc" }, { firstName: "asc" }],
+	});
+
+	return users.map(user => ({
+		id: user.id,
+		firstName: user.firstName,
+		lastName: user.lastName,
+		email: user.email,
+		role: user.role,
+		postCount: user._count.posts,
+	}));
+}
+
+export async function findUserByEmail(
+	email: string,
+): Promise<{ id: number } | null> {
+	return prisma.user.findUnique({
+		where: { email: email.trim().toLowerCase() },
+		select: { id: true },
+	});
+}
+
+export async function countAuthorPosts(id: number): Promise<number> {
+	return prisma.post.count({ where: { authorId: id } });
+}
+
+type AuthorInput = {
+	firstName: string;
+	lastName: string;
+	email: string;
+	role: Role;
+};
+
+export async function createAuthor(
+	data: AuthorInput & { password: string },
+): Promise<void> {
+	await prisma.user.create({
+		data: {
+			email: data.email.trim().toLowerCase(),
+			password: await hashPassword(data.password),
+			firstName: data.firstName.trim(),
+			lastName: data.lastName.trim(),
+			role: data.role,
+		},
+	});
+}
+
+export async function updateAuthor(
+	id: number,
+	data: AuthorInput & { password?: string },
+): Promise<void> {
+	await prisma.user.update({
+		where: { id },
+		data: {
+			email: data.email.trim().toLowerCase(),
+			firstName: data.firstName.trim(),
+			lastName: data.lastName.trim(),
+			role: data.role,
+			// Only rewrite the password when a new one was provided.
+			...(data.password ? { password: await hashPassword(data.password) } : {}),
+		},
+	});
+}
+
+export async function deleteAuthor(id: number): Promise<void> {
+	await prisma.user.delete({ where: { id } });
+}
+
 export async function registerUser({
 	username,
 	password,

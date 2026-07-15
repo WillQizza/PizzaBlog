@@ -1,18 +1,15 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/app/_lib/session";
 
-export default async function UsersPage() {
+export default async function AccountSettingsPage() {
 	const session = await getSession();
 	if (!session) {
 		return redirect("/admin/login");
 	}
-	if (session.role !== "admin") {
-		return redirect("/admin");
-	}
 
 	return (
 		<div>
-			Users Page
+			Account Settings
 		</div>
 	);
 }

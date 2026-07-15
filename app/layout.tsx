@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { Google_Sans } from "next/font/google";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import { getSiteSettings } from "@/app/_lib/settings";
 import "./globals.css";
+
+// FontAwesome injects its own <style> at runtime, which flashes oversized icons
+// during SSR. Import the CSS ourselves and disable the auto-injection.
+config.autoAddCss = false;
 
 const googleSans = Google_Sans({
 	subsets: ["latin"],

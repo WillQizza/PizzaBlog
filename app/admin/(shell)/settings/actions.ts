@@ -17,11 +17,8 @@ export type SettingsState =
 const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS) as SiteSettingKey[];
 
 export async function updateSettings(
-	_prevState: SettingsState,
 	formData: FormData,
 ): Promise<SettingsState> {
-	// Server Actions are reachable by direct POST, so re-check authorization
-	// here rather than relying on the page that renders the form.
 	const session = await getSession();
 	if (!session || session.role !== "admin") {
 		return { error: "You do not have permission to change site settings." };

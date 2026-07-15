@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/app/_lib/session";
 import { hasAnyUsers } from "@/app/_lib/users";
-import AuthForm from "./AuthForm";
+import AuthForm from "./_components/AuthForm";
 
 export default async function AdminLoginPage() {
 	const session = await getSession();
