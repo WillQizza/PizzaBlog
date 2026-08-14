@@ -1,6 +1,7 @@
 "use client";
 
 import type { Author } from "@/app/_lib/users";
+import { isAdmin } from "@/app/_lib/roles";
 import { fullName, initialsOf } from "./helpers";
 import styles from "./authors.module.css";
 
@@ -53,7 +54,7 @@ export function AuthorsTable({
 									<td>
 										<span
 											className={
-												author.role === "admin"
+												isAdmin(author)
 													? `${styles.role} ${styles.roleAdmin}`
 													: styles.role
 											}

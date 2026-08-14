@@ -2,6 +2,7 @@
 
 import { refresh } from "next/cache";
 import { getSession } from "@/app/_lib/session";
+import { isAdmin } from "@/app/_lib/roles";
 import {
 	DEFAULT_SETTINGS,
 	updateSiteSettings,
@@ -20,13 +21,13 @@ export async function updateSettings(
 	formData: FormData,
 ): Promise<SettingsState> {
 	const session = await getSession();
-	if (!session || session.role !== "admin") {
+	if (!session || !isAdmin(session)) {
 		return { error: "You do not have permission to change site settings." };
 	}
 
 	const settings = {} as SiteSettings;
 	for (const key of SETTING_KEYS) {
-		settings[key] = String(formData.get(key) ?? "").trim();
+		settings[key] = (formData.get(key) ?? "").toString().trim();
 	}
 
 	if (!settings.siteName) {

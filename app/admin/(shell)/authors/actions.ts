@@ -3,6 +3,7 @@
 import { refresh } from "next/cache";
 import type { Role } from "@/app/_generated/prisma/enums";
 import { getSession } from "@/app/_lib/session";
+import { isAdmin } from "@/app/_lib/roles";
 import {
 	countAuthorPosts,
 	createAuthor,
@@ -27,12 +28,24 @@ function isRole(value: string): value is Role {
 
 async function requireAdmin() {
 	const session = await getSession();
-	if (!session || session.role !== "admin") {
+	if (!session || !isAdmin(session)) {
 		return null;
 	}
 	return session;
 }
 
+export type AuthorInput = {
+	firstName: string;
+	lastName: string;
+	email: string;
+	role: Role;
+	// Blank means "keep the current password" on update; required on create.
+	password: string;
+};
+
+// The normalized shape the rest of this module works with. `role` widens back to
+// `string` because the typed signature is only a convenience for callers - see
+// readFields.
 type Fields = {
 	firstName: string;
 	lastName: string;
@@ -41,13 +54,17 @@ type Fields = {
 	password: string;
 };
 
-function readFields(formData: FormData): Fields {
+// Actions are reachable by direct POST, so an argument that claims to be an
+// AuthorInput may be anything at runtime. Normalize to known-good values here
+// and let validateShared reject what's left.
+function readFields(input: AuthorInput): Fields {
 	return {
-		firstName: String(formData.get("firstName") ?? "").trim(),
-		lastName: String(formData.get("lastName") ?? "").trim(),
-		email: String(formData.get("email") ?? "").trim().toLowerCase(),
-		role: String(formData.get("role") ?? "editor"),
-		password: String(formData.get("password") ?? ""),
+		firstName: typeof input?.firstName === "string" ? input.firstName.trim() : "",
+		lastName: typeof input?.lastName === "string" ? input.lastName.trim() : "",
+		email:
+			typeof input?.email === "string" ? input.email.trim().toLowerCase() : "",
+		role: typeof input?.role === "string" ? input.role : "",
+		password: typeof input?.password === "string" ? input.password : "",
 	};
 }
 
@@ -68,14 +85,14 @@ function validateShared(fields: Fields): UserActionState | null {
 }
 
 export async function createUser(
-	formData: FormData,
+	input: AuthorInput,
 ): Promise<UserActionState> {
 	const session = await requireAdmin();
 	if (!session) {
 		return { error: "You do not have permission to manage authors." };
 	}
 
-	const fields = readFields(formData);
+	const fields = readFields(input);
 	const invalid = validateShared(fields);
 	if (invalid) {
 		return invalid;
@@ -105,14 +122,14 @@ export async function createUser(
 }
 
 export async function updateUser(
-	formData: FormData,
+	id: number,
+	input: AuthorInput,
 ): Promise<UserActionState> {
 	const session = await requireAdmin();
 	if (!session) {
 		return { error: "You do not have permission to manage authors." };
 	}
 
-	const id = Number(formData.get("id"));
 	if (!Number.isInteger(id)) {
 		return { error: "That author could not be found." };
 	}
@@ -121,7 +138,7 @@ export async function updateUser(
 		return { error: "Edit your own account from Account settings." };
 	}
 
-	const fields = readFields(formData);
+	const fields = readFields(input);
 	const invalid = validateShared(fields);
 	if (invalid) {
 		return invalid;
@@ -151,15 +168,12 @@ export async function updateUser(
 	return { ok: true };
 }
 
-export async function deleteUser(
-	formData: FormData,
-): Promise<UserActionState> {
+export async function deleteUser(id: number): Promise<UserActionState> {
 	const session = await requireAdmin();
 	if (!session) {
 		return { error: "You do not have permission to manage authors." };
 	}
 
-	const id = Number(formData.get("id"));
 	if (!Number.isInteger(id)) {
 		return { error: "That author could not be found." };
 	}

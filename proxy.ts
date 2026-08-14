@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { decrypt } from "@/app/_lib/session";
+import { isAdmin } from "@/app/_lib/roles";
 
 const LOGIN_PATH = "/admin/login";
 
@@ -26,7 +27,7 @@ export default async function proxy(req: NextRequest) {
 	const isAdminOnly = ADMIN_ONLY_PREFIXES.some(
 		(prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
 	);
-	if (isAdminOnly && session?.role !== "admin") {
+	if (isAdminOnly && !isAdmin(session)) {
 		return NextResponse.redirect(new URL("/admin", req.nextUrl));
 	}
 

@@ -1,0 +1,210 @@
+.page {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	max-width: 52rem;
+	margin: 0 auto;
+	padding: 2rem 1.5rem;
+	width: 100%;
+}
+
+.topbar {
+	display: flex;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+.title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	color: var(--ink);
+}
+
+.subtitle {
+	font-size: 0.8125rem;
+	color: var(--ink-muted);
+	margin-top: 0.15rem;
+}
+
+.topActions {
+	display: flex;
+	align-items: center;
+	gap: 0.65rem;
+	margin-left: auto;
+	flex-shrink: 0;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.5rem 0.95rem;
+	border-radius: 0.5rem;
+	font-size: 0.875rem;
+	font-weight: 600;
+	cursor: pointer;
+	border: 1px solid transparent;
+	transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+	white-space: nowrap;
+}
+
+.btn:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
+.btn:disabled {
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+
+.btnPrimary {
+	color: #ffffff;
+	background: var(--accent);
+}
+
+.btnPrimary:hover:not(:disabled) {
+	background: var(--accent-hover);
+}
+
+.btnGhost {
+	color: var(--ink-muted);
+	background: var(--surface-card);
+	border-color: var(--border);
+}
+
+.btnGhost:hover {
+	background: var(--surface);
+	color: var(--ink);
+}
+
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 0.35rem;
+	min-width: 0;
+}
+
+.label {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--ink);
+}
+
+.control {
+	width: 100%;
+	font-family: inherit;
+	font-size: 0.9375rem;
+	color: var(--ink);
+	background: var(--surface-card);
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	padding: 0.55rem 0.7rem;
+	transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.control:hover {
+	border-color: #d5d8dd;
+}
+
+.control:focus,
+.control:focus-visible {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.fieldError .control {
+	border-color: #b42318;
+}
+
+.errText {
+	font-size: 0.75rem;
+	color: #b42318;
+	font-weight: 500;
+}
+
+.generalError {
+	font-size: 0.8125rem;
+	font-weight: 500;
+	color: #b42318;
+	background: rgba(180, 35, 24, 0.08);
+	border: 1px solid rgba(180, 35, 24, 0.2);
+	border-radius: 0.5rem;
+	padding: 0.6rem 0.75rem;
+}
+
+/* ---- visibility ---- */
+.publish {
+	border: 1px solid var(--border);
+	border-radius: 0.625rem;
+	background: var(--surface-card);
+	padding: 1rem 1.2rem 1.2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.9rem;
+}
+
+.publish > .label {
+	padding: 0;
+}
+
+.radios {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.7rem;
+}
+
+.radio {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	padding: 0.7rem 0.8rem;
+	border: 1px solid var(--border);
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.radio:has(input:checked) {
+	border-color: var(--accent);
+	background: var(--accent-soft);
+}
+
+.radio input {
+	margin-top: 0.15rem;
+	accent-color: var(--accent);
+}
+
+.radioTitle {
+	display: block;
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--ink);
+}
+
+.radioHint {
+	display: block;
+	font-size: 0.75rem;
+	color: var(--ink-muted);
+	margin-top: 0.1rem;
+}
+
+.scheduleField {
+	max-width: 20rem;
+}
+
+@media (max-width: 640px) {
+	.radios {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.btn,
+	.control,
+	.radio {
+		transition: none;
+	}
+}

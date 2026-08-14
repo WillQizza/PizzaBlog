@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus } from "@fortawesome/free-solid-svg-icons";
 import type { Author } from "@/app/_lib/users";
+import { isAdmin } from "@/app/_lib/roles";
+import { useToast } from "@/app/_hooks/useToast";
 import { AuthorForm } from "./AuthorForm";
 import { AuthorsTable } from "./AuthorsTable";
 import { DeleteAuthorDialog } from "./DeleteAuthorDialog";
@@ -20,24 +22,11 @@ export function AuthorsView({
 	const [editing, setEditing] = useState<Author | null>(null);
 	const [deleting, setDeleting] = useState<Author | null>(null);
 
-	const [toastMessage, setToastMessage] = useState("");
-	const [toastDanger, setToastDanger] = useState(false);
-	const [toastShown, setToastShown] = useState(false);
-	const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+	const toast = useToast();
 	const restoreFocus = useRef<HTMLElement | null>(null);
 
-	const adminCount = authors.filter(author => author.role === "admin").length;
+	const adminCount = authors.filter(isAdmin).length;
 	const editorCount = authors.length - adminCount;
-
-	function showToast(message: string, danger = false) {
-		setToastMessage(message);
-		setToastDanger(danger);
-		setToastShown(true);
-		if (toastTimer.current) {
-			clearTimeout(toastTimer.current);
-		}
-		toastTimer.current = setTimeout(() => setToastShown(false), 2600);
-	}
 
 	function openAdd() {
 		restoreFocus.current = document.activeElement as HTMLElement;
@@ -79,14 +68,6 @@ export function AuthorsView({
 		return () => document.removeEventListener("keydown", onKeyDown);
 	}, []);
 
-	useEffect(() => {
-		return () => {
-			if (toastTimer.current) {
-				clearTimeout(toastTimer.current);
-			}
-		};
-	}, []);
-
 	return (
 		<div className={styles.page}>
 			<header className={styles.topbar}>
@@ -121,7 +102,7 @@ export function AuthorsView({
 					author={editing}
 					onClose={closeForm}
 					onSaved={message => {
-						showToast(message);
+						toast.show(message);
 						closeForm();
 					}}
 				/>
@@ -132,7 +113,7 @@ export function AuthorsView({
 					author={deleting}
 					onClose={closeDelete}
 					onDeleted={message => {
-						showToast(message, true);
+						toast.show(message, true);
 						closeDelete();
 					}}
 				/>
@@ -140,9 +121,9 @@ export function AuthorsView({
 
 			<div
 				className={
-					toastShown
-						? `${styles.toast} ${styles.toastShown}${toastDanger ? ` ${styles.toastDangerVariant}` : ""}`
-						: `${styles.toast}${toastDanger ? ` ${styles.toastDangerVariant}` : ""}`
+					toast.shown
+						? `${styles.toast} ${styles.toastShown}${toast.danger ? ` ${styles.toastDangerVariant}` : ""}`
+						: `${styles.toast}${toast.danger ? ` ${styles.toastDangerVariant}` : ""}`
 				}
 				role="status"
 				aria-live="polite"
@@ -150,7 +131,7 @@ export function AuthorsView({
 				<span className={styles.toastMark} aria-hidden>
 					<FontAwesomeIcon icon={faCheck} />
 				</span>
-				<span>{toastMessage}</span>
+				<span>{toast.message}</span>
 			</div>
 		</div>
 	);

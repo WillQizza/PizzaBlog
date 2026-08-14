@@ -2,31 +2,29 @@
 
 import { useTransition } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
-import type { Author } from "@/app/_lib/users";
-import { deleteUser } from "../actions";
-import { fullName } from "./helpers";
-import styles from "./authors.module.css";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import type { PostListItem } from "@/app/_lib/posts";
+import { deletePostAction } from "../actions";
+import styles from "./posts.module.css";
 
-export function DeleteAuthorDialog({
-	author,
+export function DeletePostDialog({
+	post,
 	onClose,
 	onDeleted,
 }: {
-	author: Author;
+	post: PostListItem;
 	onClose: () => void;
-	onDeleted: (message: string) => void;
+	onDeleted: (message: string, danger: boolean) => void;
 }) {
 	const [pending, startTransition] = useTransition();
-	const blockedByPosts = author.postCount > 0;
 
 	function confirmDelete() {
 		startTransition(async () => {
-			const result = await deleteUser(author.id);
-			if ("ok" in result) {
-				onDeleted(`${fullName(author)} removed`);
-			} else {
-				onDeleted(result.error);
+			const result = await deletePostAction(post.id);
+			if (result && "ok" in result) {
+				onDeleted(`"${post.title}" deleted`, true);
+			} else if (result) {
+				onDeleted(result.error, true);
 			}
 		});
 	}
@@ -44,29 +42,19 @@ export function DeleteAuthorDialog({
 				className={`${styles.modal} ${styles.confirm}`}
 				role="dialog"
 				aria-modal="true"
-				aria-labelledby="deleteTitle"
+				aria-labelledby="deletePostTitle"
 			>
 				<div className={styles.modalHead}>
 					<div className={styles.confirmIcon} aria-hidden>
 						<FontAwesomeIcon icon={faTrash} />
 					</div>
-					<h2 className={styles.modalTitle} id="deleteTitle">
-						Delete author?
+					<h2 className={styles.modalTitle} id="deletePostTitle">
+						Delete post?
 					</h2>
 					<p className={styles.confirmText}>
-						<strong>{fullName(author)}</strong> will lose access immediately.
-						This can&apos;t be undone.
+						<strong>{post.title}</strong> will be permanently removed. This
+						can&apos;t be undone.
 					</p>
-					{blockedByPosts && (
-						<div className={styles.warnLine}>
-							<FontAwesomeIcon icon={faTriangleExclamation} aria-hidden />
-							<span>
-								They have {author.postCount} post
-								{author.postCount === 1 ? "" : "s"}. Reassign or remove those
-								first.
-							</span>
-						</div>
-					)}
 				</div>
 				<div className={styles.modalFoot}>
 					<div className={styles.spacer} />
@@ -82,9 +70,9 @@ export function DeleteAuthorDialog({
 						type="button"
 						className={`${styles.btn} ${styles.btnDanger}`}
 						onClick={confirmDelete}
-						disabled={pending || blockedByPosts}
+						disabled={pending}
 					>
-						Delete author
+						{pending ? "Deleting..." : "Delete post"}
 					</button>
 				</div>
 			</div>

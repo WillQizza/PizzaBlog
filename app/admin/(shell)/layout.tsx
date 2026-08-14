@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { logout } from "@/app/admin/actions";
 import { Logo } from "@/app/_components/Logo";
+import { isAdmin } from "@/app/_lib/roles";
 import { getCurrentUser } from "@/app/_lib/users";
 import { AdminNav, type AdminNavGroup } from "./_components/AdminNav";
 import styles from "./layout.module.css";
@@ -15,7 +16,7 @@ export default async function AdminLayout({
 		return redirect("/admin/login");
 	}
 
-	const isAdmin = user.role === "admin";
+	const admin = isAdmin(user);
 
 	const groups: AdminNavGroup[] = [
 		{
@@ -23,13 +24,13 @@ export default async function AdminLayout({
 			items: [
 				{ label: "Dashboard", href: "/admin" },
 				{ label: "Posts", href: "/admin/posts" },
-				...(isAdmin ? [{ label: "Authors", href: "/admin/authors" }] : []),
+				...(admin ? [{ label: "Authors", href: "/admin/authors" }] : []),
 			],
 		},
 		{
 			label: "Site",
 			items: [
-				...(isAdmin ? [{ label: "Site settings", href: "/admin/settings" }] : []),
+				...(admin ? [{ label: "Site settings", href: "/admin/settings" }] : []),
 				{ label: "View site", href: "/" },
 			],
 		},

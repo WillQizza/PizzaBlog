@@ -72,3 +72,95 @@ export async function getRecentPosts({
 		updatedAt: post.updatedAt,
 	}));
 }
+
+export type PostListItem = {
+	id: number;
+	title: string;
+	authorName: string;
+	authorId: number;
+	readMinutes: number;
+	state: PostState;
+	updatedAt: Date;
+};
+
+// Every post in every state, for the admin posts list. Admins pass no authorId
+// to see all; editors pass their own id so they only manage their own posts.
+export async function getPostsForList(authorId?: number): Promise<PostListItem[]> {
+	const posts = await prisma.post.findMany({
+		where: authorId === undefined ? {} : { authorId },
+		orderBy: { updatedAt: "desc" },
+		include: {
+			author: { select: { firstName: true, lastName: true } },
+		},
+	});
+
+	const now = new Date();
+	return posts.map(post => ({
+		id: post.id,
+		title: post.title,
+		authorName: `${post.author.firstName} ${post.author.lastName}`,
+		authorId: post.authorId,
+		readMinutes: toReadMinutes(post.body),
+		state: getPostState(post.publishAt, now),
+		updatedAt: post.updatedAt,
+	}));
+}
+
+export type PostRecord = {
+	id: number;
+	title: string;
+	body: string;
+	authorId: number;
+	publishAt: Date | null;
+};
+
+// One read of a single post, shared by the editor and by the actions that
+// authorize against `authorId` or resolve "publish now" against `publishAt`.
+export async function getPost(id: number): Promise<PostRecord | null> {
+	return prisma.post.findUnique({
+		where: { id },
+		select: {
+			id: true,
+			title: true,
+			body: true,
+			authorId: true,
+			publishAt: true,
+		},
+	});
+}
+
+export async function createPost(data: {
+	title: string;
+	body: string;
+	authorId: number;
+	publishAt: Date | null;
+}): Promise<{ id: number }> {
+	const post = await prisma.post.create({
+		data: {
+			title: data.title,
+			body: data.body,
+			authorId: data.authorId,
+			publishAt: data.publishAt,
+		},
+		select: { id: true },
+	});
+	return post;
+}
+
+export async function updatePost(
+	id: number,
+	data: { title: string; body: string; publishAt: Date | null },
+): Promise<void> {
+	await prisma.post.update({
+		where: { id },
+		data: {
+			title: data.title,
+			body: data.body,
+			publishAt: data.publishAt,
+		},
+	});
+}
+
+export async function deletePost(id: number): Promise<void> {
+	await prisma.post.delete({ where: { id } });
+}

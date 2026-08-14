@@ -12,8 +12,8 @@ export async function login(
 	_prevState: AuthState,
 	formData: FormData,
 ): Promise<AuthState> {
-	const email = String(formData.get("email") ?? "");
-	const password = String(formData.get("password") ?? "");
+	const email = (formData.get("email") ?? "").toString();
+	const password = (formData.get("password") ?? "").toString();
 
 	if (!email || !password) {
 		return { error: "Email and password are required." };
@@ -32,8 +32,8 @@ export async function register(
 	_prevState: AuthState,
 	formData: FormData,
 ): Promise<AuthState> {
-	const email = String(formData.get("email") ?? "");
-	const password = String(formData.get("password") ?? "");
+	const email = (formData.get("email") ?? "").toString();
+	const password = (formData.get("password") ?? "").toString();
 
 	if (!email || !password) {
 		return { error: "Email and password are required." };

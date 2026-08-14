@@ -6,19 +6,13 @@ import {
 	getDashboardStats,
 } from "@/app/_lib/dashboard";
 import { getRecentPosts } from "@/app/_lib/posts";
+import { isAdmin } from "@/app/_lib/roles";
+import { formatDate } from "@/app/_lib/format";
 import { getCurrentUser, getTeamMembers } from "@/app/_lib/users";
 import { Sparkline } from "./_components/Sparkline";
 import { StatTile } from "./_components/StatTile";
 import { StatusPill } from "./_components/StatusPill";
 import styles from "./page.module.css";
-
-function formatDate(date: Date): string {
-	return date.toLocaleDateString("en-US", {
-		month: "short",
-		day: "numeric",
-		year: "numeric",
-	});
-}
 
 export default async function AdminDashboardPage() {
 	const user = await getCurrentUser();
@@ -26,14 +20,14 @@ export default async function AdminDashboardPage() {
 		return redirect("/admin/login");
 	}
 
-	const isAdmin = user.role === "admin";
-	const scope = isAdmin ? undefined : user.id;
+	const admin = isAdmin(user);
+	const scope = admin ? undefined : user.id;
 
 	const [stats, monthly, recent, team] = await Promise.all([
 		getDashboardStats(scope),
 		getMonthlyPublishedPoints(scope),
 		getRecentPosts({ limit: 6, authorId: scope }),
-		isAdmin ? getTeamMembers() : null,
+		admin ? getTeamMembers() : null,
 	]);
 
 	const publishedTotal = monthly.reduce((sum, point) => sum + point.count, 0);
@@ -44,7 +38,7 @@ export default async function AdminDashboardPage() {
 				<div>
 					<h1 className={styles.title}>Dashboard</h1>
 					<p className={styles.subtitle}>
-						{isAdmin
+						{admin
 							? `Welcome back, ${user.name || user.email} - here's what's happening.`
 							: "Your posts at a glance."}
 					</p>
@@ -68,7 +62,7 @@ export default async function AdminDashboardPage() {
 					deltaTone={stats.publishedThisMonth > 0 ? "good" : "muted"}
 				/>
 				<StatTile label="Drafts" value={stats.drafts} delta="Not yet scheduled" />
-				{isAdmin ? (
+				{admin ? (
 					<StatTile
 						label="Authors"
 						value={stats.admins + stats.editors}
@@ -169,7 +163,7 @@ export default async function AdminDashboardPage() {
 										</div>
 										<span
 											className={
-												member.role === "admin"
+												isAdmin(member)
 													? `${styles.role} ${styles.roleAdmin}`
 													: styles.role
 											}

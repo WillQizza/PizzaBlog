@@ -1,0 +1,17 @@
+.editor {
+	border: 1px solid var(--border);
+	border-radius: 0.625rem;
+	background: var(--surface-card);
+	overflow: hidden;
+}
+
+/* Milkdown/Crepe renders its own scaffolding; give it a comfortable minimum
+   height and let the content define the rest. */
+.editor :global(.milkdown) {
+	min-height: 22rem;
+}
+
+.editor :global(.ProseMirror) {
+	padding: 1.25rem 1.5rem;
+	outline: none;
+}

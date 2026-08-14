@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import type { Author } from "@/app/_lib/users";
-import { createUser, updateUser } from "../actions";
+import { createUser, updateUser, type AuthorInput } from "../actions";
 import { fullName } from "./helpers";
 import styles from "./authors.module.css";
 
@@ -25,9 +25,11 @@ export function AuthorForm({
 	const [pending, startTransition] = useTransition();
 
 	function submitForm(formData: FormData) {
-		const firstName = String(formData.get("firstName") ?? "").trim();
-		const email = String(formData.get("email") ?? "").trim();
-		const password = String(formData.get("password") ?? "");
+		const firstName = (formData.get("firstName") ?? "").toString().trim();
+		const lastName = (formData.get("lastName") ?? "").toString().trim();
+		const email = (formData.get("email") ?? "").toString().trim();
+		const role = (formData.get("role") ?? "editor").toString();
+		const password = (formData.get("password") ?? "").toString();
 
 		const nextErrors: FieldErrors = {};
 		if (!firstName) {
@@ -46,23 +48,25 @@ export function AuthorForm({
 			return;
 		}
 
-		const target = editing;
-		if (target) {
-			formData.set("id", String(target.id));
-		}
+		const input: AuthorInput = {
+			firstName,
+			lastName,
+			email,
+			role: role === "admin" ? "admin" : "editor",
+			password,
+		};
 
+		const target = editing;
 		startTransition(async () => {
 			const result = target
-				? await updateUser(formData)
-				: await createUser(formData);
-			if (result && "ok" in result) {
+				? await updateUser(target.id, input)
+				: await createUser(input);
+			if ("ok" in result) {
 				onSaved(target ? "Author updated" : "Author added");
-			} else if (result) {
-				if (result.field) {
-					setErrors({ [result.field]: result.error });
-				} else {
-					setErrors({ general: result.error });
-				}
+			} else if (result.field) {
+				setErrors({ [result.field]: result.error });
+			} else {
+				setErrors({ general: result.error });
 			}
 		});
 	}
