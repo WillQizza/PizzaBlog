@@ -50,10 +50,10 @@ export function PostsTable({
 								<td className={styles.date}>{formatDate(post.updatedAt)}</td>
 								<td>
 									<div className={styles.rowActions}>
-										<Link href={`/blog/${post.id}/edit`} className={styles.rowAction}>
+										<Link href={`/admin/posts/${post.id}/edit`} className={styles.rowAction}>
 											Edit
 										</Link>
-										<Link href={`/blog/${post.id}`} className={styles.rowAction}>
+										<Link href={`/blog/${post.slug}`} className={styles.rowAction}>
 											View
 										</Link>
 										<button

@@ -25,7 +25,7 @@ export default async function Home() {
 						{posts.map(post => (
 							<PostCard
 								key={post.id}
-								href={`/blog/${post.id}`}
+								href={`/blog/${post.slug}`}
 								title={post.title}
 								excerpt={post.excerpt}
 								authorName={post.authorName}

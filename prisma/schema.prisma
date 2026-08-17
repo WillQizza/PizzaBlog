@@ -31,6 +31,7 @@ model SiteSetting {
 model Post {
 	id        Int       @id @default(autoincrement())
 	title     String
+	slug      String    @unique
 	body      String
 	authorId  Int
 	author    User      @relation(fields: [authorId], references: [id])

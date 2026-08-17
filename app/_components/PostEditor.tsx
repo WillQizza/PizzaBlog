@@ -147,6 +147,7 @@ export function PostEditor({ id, title, body, publishAt }: PostEditorProps) {
 					id="title"
 					name="title"
 					type="text"
+					ref={titleRef}
 					className={styles.control}
 					defaultValue={title ?? ""}
 					placeholder="Give your post a title"

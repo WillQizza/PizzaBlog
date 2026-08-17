@@ -6,12 +6,20 @@
 }
 
 /* Milkdown/Crepe renders its own scaffolding; give it a comfortable minimum
-   height and let the content define the rest. */
+   height and let the content define the rest. Crepe's own widgets (toolbar,
+   block handle, slash menu) are absolutely positioned, so .ProseMirror is the
+   only in-flow child and can safely stretch. */
 .editor :global(.milkdown) {
+	display: flex;
+	flex-direction: column;
 	min-height: 22rem;
 }
 
+/* The contenteditable has to fill the box itself. Sized to its content, the
+   empty space under the last paragraph belongs to the wrapper, and clicking
+   there lands outside the editor and does nothing. */
 .editor :global(.ProseMirror) {
+	flex: 1;
 	padding: 1.25rem 1.5rem;
 	outline: none;
 }

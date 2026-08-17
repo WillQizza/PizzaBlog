@@ -1,11 +1,17 @@
+/* The nav follows the reader down the page. The background is opaque so the
+   article scrolls underneath it rather than through it. */
 .header {
+	position: sticky;
+	top: 0;
+	z-index: 10;
 	background: var(--surface-card);
 	border-bottom: 1px solid var(--border);
 }
 
+/* The header runs the full width of the window: the logo sits against the left
+   edge and the nav against the right, rather than lining up with a centered
+   content column. */
 .inner {
-	max-width: 72rem;
-	margin: 0 auto;
 	padding: 0.875rem 1.5rem;
 	display: flex;
 	align-items: center;

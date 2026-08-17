@@ -52,7 +52,8 @@ export function DeletePostDialog({
 						Delete post?
 					</h2>
 					<p className={styles.confirmText}>
-						<strong>{post.title}</strong> will be permanently removed. This
+						{/* For some reason, the space is necessary there, otherwise post.title and will will be mushed together. */}
+						<strong>{post.title}</strong>{" "}will be permanently removed. This
 						can&apos;t be undone.
 					</p>
 				</div>

@@ -4,7 +4,7 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSession, type SessionPayload } from "@/app/_lib/session";
 import { canAuthorManagePosts, isAdmin } from "@/app/_lib/roles";
-import { createPost, deletePost, getPost, updatePost } from "@/app/_lib/posts";
+import { createPost, deletePost, getPost, SlugTakenError, updatePost } from "@/app/_lib/posts";
 
 type PostError = { error: string; field?: "title" | "body" | "publishAt" };
 
@@ -87,6 +87,12 @@ function canManage(session: SessionPayload, ownerId: number): boolean {
 	return isAdmin(session) || session.userId === ownerId;
 }
 
+// A slug race loses nothing the author typed, and the next attempt resolves
+// against the row that just landed, so the fix really is to press save again.
+const SLUG_TAKEN_ERROR: PostError = {
+	error: "Another save just claimed this title's link. Save again to keep your work.",
+};
+
 export async function createPostAction(
 	input: PostInput,
 ): Promise<PostActionState> {
@@ -106,12 +112,19 @@ export async function createPostAction(
 		return publishAt;
 	}
 
-	await createPost({
-		title: fields.title,
-		body: fields.body,
-		authorId: session.userId,
-		publishAt,
-	});
+	try {
+		await createPost({
+			title: fields.title,
+			body: fields.body,
+			authorId: session.userId,
+			publishAt,
+		});
+	} catch (error) {
+		if (error instanceof SlugTakenError) {
+			return SLUG_TAKEN_ERROR;
+		}
+		throw error;
+	}
 
 	// Redirect back to admin posts list
 	refresh();
@@ -149,11 +162,18 @@ export async function updatePostAction(
 		return publishAt;
 	}
 
-	await updatePost(id, {
-		title: fields.title,
-		body: fields.body,
-		publishAt,
-	});
+	try {
+		await updatePost(id, {
+			title: fields.title,
+			body: fields.body,
+			publishAt,
+		});
+	} catch (error) {
+		if (error instanceof SlugTakenError) {
+			return SLUG_TAKEN_ERROR;
+		}
+		throw error;
+	}
 
 	// Throws NEXT_REDIRECT, so a successful save never returns to the editor.
 	refresh();

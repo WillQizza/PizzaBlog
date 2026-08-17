@@ -9,9 +9,9 @@ function initialsOf(name: string): string {
 		.join("");
 }
 
-export function Avatar({ name }: { name: string }) {
+export function Avatar({ name, size = "small" }: { name: string; size?: "small" | "large" }) {
 	return (
-		<span className={styles.avatar}>
+		<span className={size === "large" ? `${styles.avatar} ${styles.large}` : styles.avatar}>
 			{initialsOf(name)}
 		</span>
 	);

@@ -12,3 +12,11 @@
 	font-weight: 700;
 	letter-spacing: 0.02em;
 }
+
+/* Bylines on the post page carry the avatar on its own, without a card around
+   it, so it needs the extra weight. */
+.large {
+	width: 2.5rem;
+	height: 2.5rem;
+	font-size: 0.8125rem;
+}

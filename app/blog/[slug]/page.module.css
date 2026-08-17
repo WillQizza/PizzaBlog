@@ -1,0 +1,137 @@
+.main {
+	flex: 1;
+	background: var(--surface);
+	padding: 2.5rem 1.5rem 4rem;
+}
+
+/* The sheet takes nearly the full page rather than sitting in a reading
+   column, so the article runs much wider than the site's other pages. */
+.sheet {
+	max-width: 95%;
+	margin: 0 auto;
+	background: var(--surface-card);
+	border: 1px solid var(--border);
+	border-radius: 0.625rem;
+	box-shadow: 0 1px 2px rgba(22, 24, 29, 0.04);
+	padding: 3rem 3.5rem 3.5rem;
+}
+
+.backLink {
+	display: inline-block;
+	font-family: var(--font-sans);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+	margin-bottom: 1.5rem;
+}
+
+.backLink:hover {
+	color: var(--accent);
+}
+
+.title {
+	font-family: var(--font-sans);
+	font-size: clamp(2rem, 4vw, 2.5rem);
+	font-weight: 700;
+	line-height: 1.12;
+	letter-spacing: -0.022em;
+	text-wrap: balance;
+	color: var(--ink);
+	margin-bottom: 1.5rem;
+}
+
+.byline {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding-bottom: 2rem;
+	border-bottom: 1px solid var(--border-faint);
+}
+
+.bylineName {
+	font-family: var(--font-sans);
+	font-size: 0.9375rem;
+	font-weight: 700;
+	color: var(--ink);
+}
+
+/* Rides on the date line itself, after the read time, so it shares that line's
+   baseline instead of floating beside the byline block. Only rendered for
+   someone who can actually edit this post. */
+.editLink {
+	font-weight: 600;
+	color: var(--accent);
+}
+
+.editLink:hover {
+	color: var(--accent-hover);
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+	text-decoration-thickness: 1px;
+}
+
+.editLink:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 1px;
+}
+
+.bylineDetails {
+	font-family: var(--font-sans);
+	font-size: 0.8125rem;
+	color: var(--ink-faint);
+	margin-top: 0.0625rem;
+}
+
+.body {
+	padding-top: 2rem;
+}
+
+.postFooter {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 3rem;
+	padding-top: 1.5rem;
+	border-top: 1px solid var(--border-faint);
+}
+
+.postFooterText {
+	font-family: var(--font-sans);
+	font-size: 0.875rem;
+	line-height: 1.5;
+	color: var(--ink-muted);
+}
+
+.postFooterText strong {
+	font-weight: 700;
+	color: var(--ink);
+}
+
+.more {
+	max-width: 95%;
+	margin: 3rem auto 0;
+}
+
+.moreLabel {
+	font-family: var(--font-sans);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+	margin-bottom: 1rem;
+}
+
+.moreGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+	gap: 1.5rem;
+}
+
+@media (max-width: 40rem) {
+	.sheet {
+		padding: 2rem 1.5rem 2.5rem;
+	}
+}
