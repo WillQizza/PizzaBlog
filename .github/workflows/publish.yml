@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: us-east-1
+
+      - name: Log in to public ECR
+        run: |
+          aws ecr-public get-login-password --region us-east-1 \\
+            | docker login --username AWS --password-stdin public.ecr.aws
+
+      - name: Build and push
+        run: |
+          docker build -t public.ecr.aws/l7y2e7z7/pizzablog:latest .
+          docker push public.ecr.aws/l7y2e7z7/pizzablog:latest
