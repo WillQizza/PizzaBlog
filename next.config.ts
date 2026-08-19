@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+	output: "standalone",
 	compiler: {
 		// Milkdown's Crepe editor is built with Vue, which expects the bundler to
 		// inject these compile-time flags. Defining them silences the dev warning

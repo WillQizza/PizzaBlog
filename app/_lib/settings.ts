@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cache } from "react";
+import { connection } from "next/server";
 import { prisma } from "@/app/_lib/prisma";
 
 export const DEFAULT_SETTINGS = {
@@ -18,6 +19,8 @@ export type SiteSettings = { [K in SiteSettingKey]: string };
 const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS) as SiteSettingKey[];
 
 export const getSiteSettings = cache(async (): Promise<SiteSettings> => {
+	await connection();
+
 	const rows = await prisma.siteSetting.findMany({
 		where: { key: { in: SETTING_KEYS } },
 	});
